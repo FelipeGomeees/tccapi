@@ -7,6 +7,11 @@ export default {
         return entity;
     },
 
+    async findResumo(body) {
+        const entity = await repository.findResumo(body);
+        return entity;
+    },
+
     async all(body) {
         const categorias = await tagPadraoCategoriaRepository.all();
         const entity = [];
@@ -27,8 +32,9 @@ export default {
         return entity;
     },
 
-    async create(req) {
-        const entity = await repository.create(req.body);
+    async create(body) {
+        const newDados = { ...body.dados, tagdatacriacao: new Date().toISOString() };
+        const entity = await repository.create(newDados);
         
         return entity;
     },

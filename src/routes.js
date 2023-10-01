@@ -47,7 +47,8 @@ export default [
     { method: 'delete', resource: '/usuarioambiente', auth: KeyMiddleware, task: usuarioAmbienteController.delete },
 
     { method: 'get', resource: '/tag', auth: TokenMiddleware, task: tagController.find },
-    { method: 'post', resource: '/tag', auth: KeyMiddleware, task: tagController.create },
+    { method: 'get', resource: '/tag/resumo', auth: TokenMiddleware, task: tagController.findResumo },
+    { method: 'post', resource: '/tag', auth: TokenMiddleware, task: tagController.create },
     { method: 'put', resource: '/tag', auth: KeyMiddleware, task: tagController.alter },
     { method: 'delete', resource: '/tag', auth: KeyMiddleware, task: tagController.delete },
 

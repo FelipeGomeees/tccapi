@@ -13,14 +13,23 @@ export default {
         return responseHandler(200, entity);
     },
 
+    async findResumo({ query }) {
+        const entity = await service.findResumo();
+        return responseHandler(200, entity);
+    },
+
     async all({ query }) {
         let entity = await service.all(query);
         return responseHandler(200, entity);
     },
 
-    async create(req) {
-        const entity = await service.create(req);
-        return responseHandler(201, entity);
+    async create({ body }) {
+        const entity = await service.create(body);
+        if (entity instanceof Error) {
+            return responseHandler(500, { message: entity.message, stack: entity.stack });
+        } else {
+            return responseHandler(201, entity);
+        }
     },
 
     async alter(req) {

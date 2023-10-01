@@ -1,13 +1,20 @@
 const tabela = 'tag';
 
-import Builder from "../utils/queryBuilder.js";
+import { Builder } from "../utils/accel.js";
+import oldBuilder from "../utils/queryBuilder.js";
 
 export default {
-    async find(params) {
-        const entity = await Builder(
-            `SELECT * FROM ${tabela} LEFT JOIN `,
-        )
-        return entity;
+    async find() {
+        return new Builder(tabela)
+        .select('*')
+        .commit();
+    },
+
+    async findResumo() {
+        return new Builder(tabela)
+        .select('*')
+        .leftJoin('tagtipo', 'tagidtagtipo', '=', 'tagtipo.id')
+        .commit();
     },
 
     async search(queryWhere) {
@@ -20,29 +27,26 @@ export default {
             where = where + `${(Object.keys(queryWhere))[i]} = '${(Object.values(queryWhere))[i]}'`;
         }
         const query = `SELECT * FROM ${tabela} WHERE ${where}`     
-        const entity = await Builder(
+        const entity = await oldBuilder(
             query
         )
         return entity;
     },
-    async create(body) {
-        console.log(body);
-        const query = `INSERT INTO tag (tagidambiente, tagnome, tagdescricao, tagprioridade, tagidtagtipo, tagcor, tagdark)
-         VALUES (${body.tagidambiente},'${body.tagnome}', '${body.tagdescricao}',${body.tagprioridade},${body.tagidtagtipo},'${body.tagcor}','${body.tagdark})`;
-        const entity = await Builder(query);
-        return entity;
-    },
 
-    // CREATE TABLE tag (
-    //     id SERIAL PRIMARY KEY,
-    //     tagidambiente INT NOT NULL REFERENCES ambiente(id),
-    //     tagnome VARCHAR(255),
-    //     tagdescricao VARCHAR(255),
-    //     tagprioridade VARCHAR(255),
-    //     tagidtagtipo INT NOT NULL REFERENCES tagtipo(id),
-    //     tagcor VARCHAR(255),
-    //     tagdark VARCHAR(1)
-    // );
+    async create(body) {
+        return new Builder(tabela)
+        .insert([
+            ['tagidusuarioambiente', body.tagidusuarioambiente],
+            ['tagnome', body.tagnome],
+            ['tagdescricao', body.tagdescricao],
+            ['tagprioridade', body.tagprioridade],
+            ['tagidtagtipo', body.tagidtagtipo],
+            ['tagcor', body.tagcor],
+            ['tagdark', body.tagdark],
+            ['tagdatacriacao', body.tagdatacriacao],
+        ])
+        .commit();
+    },
 
     async alter(params) {
         const query = 'UPDATE Usuario SET';

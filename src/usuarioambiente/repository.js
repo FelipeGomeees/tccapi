@@ -1,16 +1,17 @@
 const tabela = 'usuarioambiente';
 import { Builder } from "../utils/accel.js";
+import OldBuilder from "../utils/queryBuilder.js";
 
 export default {
     async find(params) {
-        const entity = await Builder(
+        const entity = await OldBuilder(
             `SELECT * FROM ${tabela}`,
         )
         return entity;
     },
 
     async all(params) {
-        const entity = await Builder(
+        const entity = await OldBuilder(
             `SELECT * FROM ${tabela} ORDER BY id`,
         )
         return entity;
@@ -26,7 +27,7 @@ export default {
             where = where + `${(Object.keys(queryWhere))[i]} = '${(Object.values(queryWhere))[i]}'`;
         }
         const query = `SELECT * FROM ${tabela} WHERE ${where}`     
-        const entity = await Builder(
+        const entity = await OldBuilder(
             query
         )
         return entity;

@@ -21,6 +21,29 @@ export class Builder {
         this.queryString = `SELECT ${query} FROM ${this.queryString}`;
         return this;
     }
+    set(dados) {
+        if (this.validate()) {
+            return this;
+        }
+        let updates = '';
+        for (let i = 0; i < dados.length; i += 1) {
+            if (i === (dados.length - 1)) {
+                if (typeof dados[i][1] === 'string') {
+                    updates = `${updates}${dados[i][0]} = '${(dados[i][1])}'`;
+                } else {
+                    updates = `${updates}${dados[i][0]} = ${(dados[i][1])}`;
+                }
+            } else {
+                if (typeof dados[i][1] === 'string') {
+                    updates = `${updates}${dados[i][0]} = '${(dados[i][1])}', `;
+                } else {
+                    updates = `${updates}${dados[i][0]} = ${(dados[i][1])}, `;
+                }
+            }
+        }
+        this.queryString = `UPDATE ${this.queryString} SET ${updates}`;
+        return this;
+    }
     where(coluna, condicao, valor) {
         if (this.validate()) {
             return this;
@@ -34,6 +57,22 @@ export class Builder {
             this.error = new Error(`Parametro informado no WHERE não é string ou numero`);
         }
         this.queryString = `${this.queryString} WHERE ${coluna} ${condicao} ${temp.valor}`;
+        // FAZER AND WHERE
+        return this;
+    }
+    and(coluna, condicao, valor) {
+        if (this.validate()) {
+            return this;
+        }
+        const temp = { coluna, condicao, valor };
+        if (typeof temp.valor === 'string') {
+            temp.valor = `'${temp.valor}'`
+        } else if (typeof temp.valor === 'undefined') {
+            this.error = new Error(`Um ou mais parametros de WHERE não foram informados`);
+        }else if (typeof temp.valor !== 'number') {
+            this.error = new Error(`Parametro informado no WHERE não é string ou numero`);
+        }
+        this.queryString = `${this.queryString} AND ${coluna} ${condicao} ${temp.valor}`;
         // FAZER AND WHERE
         return this;
     }
@@ -76,7 +115,7 @@ export class Builder {
                 if (typeof dados[i][1] === 'string') {
                     valores = `${valores}'${(dados[i][1])}'`;
                 } else {
-                    valores = valores + (dados[i][1] + ',');
+                    valores = valores + (dados[i][1]);
                 }
                 colunas = colunas + dados[i][0]
             } else {
@@ -104,5 +143,9 @@ export class Builder {
     }
     validate() {
         return (typeof this.queryString !== 'string' || this.error) ? true : false;
+    }
+    raw(raw) {
+        this.queryString = raw;
+        return this;
     }
 };

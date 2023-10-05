@@ -21,6 +21,13 @@ export class Builder {
         this.queryString = `SELECT ${query} FROM ${this.queryString}`;
         return this;
     }
+    delete() {
+        if (this.validate()) {
+            return this;
+        }
+        this.queryString = `DELETE FROM ${this.queryString}`;
+        return this;
+    }
     set(dados) {
         if (this.validate()) {
             return this;

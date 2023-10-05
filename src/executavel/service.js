@@ -7,11 +7,6 @@ export default {
         return entity;
     },
 
-    async findResumo(body) {
-        const entity = await repository.findResumo(body);
-        return entity;
-    },
-
     async all(body) {
         const categorias = await tagPadraoCategoriaRepository.all();
         const entity = [];
@@ -33,19 +28,19 @@ export default {
     },
 
     async create(body) {
-        const newDados = { ...body.dados, tagdatacriacao: new Date().toISOString() };
+        const newDados = { ...body.dados, exedatacriacao: new Date().toISOString() };
         const entity = await repository.create(newDados);
         
         return entity;
     },
 
-    async alter(body, params) {
-        const entity = await repository.alter(body.dados, params);
+    async alter(req) {
+        const entity = await repository.alter(query.where);
         return entity;
     },
 
     async delete(req) {
-        const entity = await repository.delete(req.params);
+        const entity = await repository.delete(req);
         return entity;
     },
 }

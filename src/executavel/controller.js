@@ -13,11 +13,6 @@ export default {
         return responseHandler(200, entity);
     },
 
-    async findResumo({ query }) {
-        const entity = await service.findResumo();
-        return responseHandler(200, entity);
-    },
-
     async all({ query }) {
         let entity = await service.all(query);
         return responseHandler(200, entity);
@@ -32,20 +27,12 @@ export default {
         }
     },
 
-    async alter({ body, params }) {
-        const entity = await service.alter(body, params);
-        if (entity instanceof Error) {
-            return responseHandler(500, { message: entity.message, stack: entity.stack });
-        } else {
-            return responseHandler(201);
-        }
+    async alter(req) {
+        const entity = await service.alter(req);
+        return entity;
     },
     async delete(req) {
         const entity = await service.delete(req);
-        if (entity instanceof Error) {
-            return responseHandler(500, { message: entity.message, stack: entity.stack });
-        } else {
-            return responseHandler(204);
-        }
+        return entity;a
     },
 }

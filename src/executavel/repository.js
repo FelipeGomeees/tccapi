@@ -1,4 +1,4 @@
-const tabela = 'tag';
+const tabela = 'executavel';
 
 import { Builder } from "../utils/accel.js";
 import oldBuilder from "../utils/queryBuilder.js";
@@ -7,13 +7,6 @@ export default {
     async find() {
         return new Builder(tabela)
         .select('*')
-        .commit();
-    },
-
-    async findResumo() {
-        return new Builder(tabela)
-        .select(['tag.*', 'tatdescricao'])
-        .leftJoin('tagtipo', 'tagidtagtipo', '=', 'tagtipo.id')
         .commit();
     },
 
@@ -36,14 +29,12 @@ export default {
     async create(body) {
         return new Builder(tabela)
         .insert([
-            ['tagidusuarioambiente', body.tagidusuarioambiente],
-            ['tagnome', body.tagnome],
-            ['tagdescricao', body.tagdescricao],
-            ['tagprioridade', body.tagprioridade],
-            ['tagidtagtipo', body.tagidtagtipo],
-            ['tagcor', body.tagcor],
-            ['tagdark', body.tagdark],
-            ['tagdatacriacao', body.tagdatacriacao],
+            ['exeidusuarioambiente', body.exeidusuarioambiente],
+            ['exenome', body.exenome],
+            ['exedescricao', body.exedescricao],
+            ['exedatacriacao', body.exedatacriacao],
+            ['exeversao', body.exeversao],
+            ['exeurl', body.exeurl],
         ])
         .commit();
     },
@@ -51,18 +42,17 @@ export default {
     async alter(body, params) {
         return new Builder(tabela)
         .set([
-            ['tagidusuarioambiente', body.tagidusuarioambiente],
-            ['tagnome', body.tagnome],
-            ['tagdescricao', body.tagdescricao],
-            ['tagprioridade', body.tagprioridade],
-            ['tagidtagtipo', body.tagidtagtipo],
-            ['tagcor', body.tagcor],
-            ['tagdark', body.tagdark],
-            ['tagdatacriacao', body.tagdatacriacao],
+            ['exeidusuarioambiente', body.exeidusuarioambiente],
+            ['exenome', body.exenome],
+            ['exedescricao', body.exedescricao],
+            ['exedatacriacao', body.exedatacriacao],
+            ['exeversao', body.exeversao],
+            ['exeurl', body.exeurl],
         ])
         .where('id', '=', params.id)
         .commit();
     },
+
     async delete(params) {
         return new Builder(tabela)
         .delete()

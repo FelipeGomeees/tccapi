@@ -25,6 +25,14 @@ export default {
         )
         return entity;
     },
+    
+    async findSpecific(query) {
+        return new Builder(tabela)
+        .select('*')
+        .leftJoin('tag', 'taeidtag', '=', 'tag.id')
+        .where('taeidexecutavel', '=', query.id)
+        .commit();
+    },
 
     async create(body) {
         return new Builder(tabela)
@@ -47,10 +55,29 @@ export default {
         .commit();
     },
 
-    async del(params) {
-        const query = `DELETE FROM ${tabela}`;
-        const entity = (await pool.query(query)).rows;
-        return entity;
+    async alterAll(body, params) {
+        return new Builder(tabela)
+        .set([
+            ['taeidtag', body.taeidtag],
+            ['taeidexecutavel', body.taeidexecutave],
+            ['taeidusuarioambiente', body.taeidusuarioambiente],
+        ])
+        .where('taeidexecutavel', '=', params.id)
+        .commit();
+    },
+
+    async delete(params) {
+        return new Builder(tabela)
+        .delete()
+        .where('id', '=', params.id)
+        .commit();
+    },
+
+    async deleteAll(params) {
+        return new Builder(tabela)
+        .delete()
+        .where('taeidexecutavel', '=', params.id)
+        .commit();
     }
 }
 

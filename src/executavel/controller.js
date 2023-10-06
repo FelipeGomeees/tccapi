@@ -13,6 +13,11 @@ export default {
         return responseHandler(200, entity);
     },
 
+    async findDetalhado({ query }) {
+        const entity =await service.findDetalhado();
+        return responseHandler(200, entity);
+    },
+
     async all({ query }) {
         let entity = await service.all(query);
         return responseHandler(200, entity);

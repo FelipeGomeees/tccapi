@@ -7,11 +7,6 @@ export default {
         return entity;
     },
 
-    async findResumo(body) {
-        const entity = await repository.findResumo(body);
-        return entity;
-    },
-
     async all(body) {
         const categorias = await tagPadraoCategoriaRepository.all();
         const entity = [];

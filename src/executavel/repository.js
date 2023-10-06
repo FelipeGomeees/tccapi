@@ -10,6 +10,12 @@ export default {
         .commit();
     },
 
+    async findDetalhado() {
+        return new Builder(tabela)
+        .select('*')
+        .commit();
+    },
+
     async search(queryWhere) {
         let where = '';
         const whereKeys = Object.keys(queryWhere);

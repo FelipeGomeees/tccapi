@@ -1,5 +1,5 @@
 import repository from './repository.js';
-import tagPadraoCategoriaRepository from '../tag-padrao-categoria/repository.js';
+import tagExecutavelRepository from '../tag-executavel/repository.js';
 
 export default {
     async find(body) {
@@ -7,19 +7,15 @@ export default {
         return entity;
     },
 
-    async all(body) {
-        const categorias = await tagPadraoCategoriaRepository.all();
-        const entity = [];
-        for (let i = 0; i < categorias.length; i += 1) {
-            const tags = await repository.all(categorias[i].id);
-            const newObj = {
-                categoria: categorias[i].tpcdescricao,
-                tags: tags ,
-            }
-            entity.push(newObj);
+    async findDetalhado(body) {
+        const entity = await repository.findDetalhado(body);
+        const newEntity = [];
+        for (let i = 0; i < entity.length; i += 1) {
+            const tags = await tagExecutavelRepository.findSpecific(entity[i]);
+            const dados = entity[i];
+            newEntity.push({ ...dados, tags });
         }
-        
-        return entity;
+        return newEntity;
     },
 
     async search(query) {

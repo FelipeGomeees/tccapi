@@ -26,6 +26,7 @@ export default [
     { method: 'put', resource: '/tagpadrao', auth: KeyMiddleware, task: tagPadraoController.alter },
     { method: 'delete', resource: '/tagpadrao', auth: KeyMiddleware, task: tagPadraoController.delete },
     
+    
     { method: 'get', resource: '/tagtipo', auth: TokenMiddleware, task: tagTipoController.find },
     { method: 'post', resource: '/tagtipo', auth: KeyMiddleware, task: tagTipoController.create },
     { method: 'put', resource: '/tagtipo', auth: KeyMiddleware, task: tagTipoController.alter },
@@ -38,8 +39,10 @@ export default [
 
     { method: 'get', resource: '/tagexecutavel', auth: TokenMiddleware, task: tagExecutavelController.find },
     { method: 'post', resource: '/tagexecutavel', auth: TokenMiddleware, task: tagExecutavelController.create },
-    { method: 'put', resource: '/tagexecutavel', auth: KeyMiddleware, task: tagExecutavelController.alter },
-    { method: 'delete', resource: '/tagxecutavel', auth: TokenMiddleware, task: tagExecutavelController.delete },
+    { method: 'put', resource: '/tagexecutavel/:id', auth: KeyMiddleware, task: tagExecutavelController.alter },
+    { method: 'put', resource: '/tagexecutavel/all/:id', auth: KeyMiddleware, task: tagExecutavelController.alterAll },
+    { method: 'delete', resource: '/tagexecutavel', auth: TokenMiddleware, task: tagExecutavelController.delete },
+    { method: 'delete', resource: '/tagexecutavel/all/:id', auth: TokenMiddleware, task: tagExecutavelController.deleteAll },
 
     { method: 'get', resource: '/ambiente', auth: TokenMiddleware, task: ambienteController.find },
     { method: 'post', resource: '/ambiente', auth: TokenMiddleware, task: ambienteController.create },
@@ -60,6 +63,7 @@ export default [
     { method: 'delete', resource: '/tag/:id', auth: TokenMiddleware, task: tagController.delete },
 
     { method: 'get', resource: '/executavel', auth: TokenMiddleware, task: executavelController.find },
+    { method: 'get', resource: '/executavel/detalhado', auth: TokenMiddleware, task: executavelController.findDetalhado },
     { method: 'post', resource: '/executavel', auth: TokenMiddleware, task: executavelController.create },
     { method: 'put', resource: '/executavel', auth: KeyMiddleware, task: executavelController.alter },
     { method: 'delete', resource: '/executavel', auth: TokenMiddleware, task: executavelController.delete },

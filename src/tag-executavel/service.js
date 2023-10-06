@@ -38,8 +38,18 @@ export default {
         return entity;
     },
 
+    async alterAll(req) {
+        const entity = await repository.alter(query.where);
+        return entity;
+    },
+
     async delete(req) {
         const entity = await repository.delete(req);
+        return entity;
+    },
+
+    async deleteAll(req) {
+        const entity = await repository.deleteAll(req);
         return entity;
     },
 }

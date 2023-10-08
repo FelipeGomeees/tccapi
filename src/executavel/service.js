@@ -30,13 +30,15 @@ export default {
         return entity;
     },
 
-    async alter(req) {
-        const entity = await repository.alter(query.where);
+    async alter(body, params) {
+        const newDados = { ...body.dados, exedatacriacao: new Date().toISOString() };
+        const entity = await repository.alter(newDados, params);
         return entity;
     },
 
     async delete(req) {
-        const entity = await repository.delete(req);
+        const tagsDeletadas = await tagExecutavelRepository.deleteAll(req.params);
+        const entity = await repository.delete(req.params);
         return entity;
     },
 }

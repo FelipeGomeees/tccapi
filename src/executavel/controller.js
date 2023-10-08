@@ -32,12 +32,20 @@ export default {
         }
     },
 
-    async alter(req) {
-        const entity = await service.alter(req);
-        return entity;
+    async alter({ body, params }) {
+        const entity = await service.alter(body, params);
+        if (entity instanceof Error) {
+            return responseHandler(500, { message: entity.message, stack: entity.stack });
+        } else {
+            return responseHandler(201);
+        }
     },
     async delete(req) {
         const entity = await service.delete(req);
-        return entity;a
+        if (entity instanceof Error) {
+            return responseHandler(500, { message: entity.message, stack: entity.stack });
+        } else {
+            return responseHandler(204);
+        }
     },
 }

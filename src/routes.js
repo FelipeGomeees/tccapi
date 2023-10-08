@@ -40,9 +40,15 @@ export default [
     { method: 'get', resource: '/tagexecutavel', auth: TokenMiddleware, task: tagExecutavelController.find },
     { method: 'post', resource: '/tagexecutavel', auth: TokenMiddleware, task: tagExecutavelController.create },
     { method: 'put', resource: '/tagexecutavel/:id', auth: KeyMiddleware, task: tagExecutavelController.alter },
-    { method: 'put', resource: '/tagexecutavel/all/:id', auth: KeyMiddleware, task: tagExecutavelController.alterAll },
     { method: 'delete', resource: '/tagexecutavel', auth: TokenMiddleware, task: tagExecutavelController.delete },
     { method: 'delete', resource: '/tagexecutavel/all/:id', auth: TokenMiddleware, task: tagExecutavelController.deleteAll },
+
+    { method: 'get', resource: '/tag', auth: TokenMiddleware, task: tagController.find },
+    { method: 'get', resource: '/tag/resumo', auth: TokenMiddleware, task: tagController.findResumo },
+    { method: 'post', resource: '/tag', auth: TokenMiddleware, task: tagController.create },
+    { method: 'put', resource: '/tag/:id', auth: TokenMiddleware, task: tagController.alter },
+    { method: 'delete', resource: '/tag/:id', auth: TokenMiddleware, task: tagController.delete },
+
 
     { method: 'get', resource: '/ambiente', auth: TokenMiddleware, task: ambienteController.find },
     { method: 'post', resource: '/ambiente', auth: TokenMiddleware, task: ambienteController.create },
@@ -56,17 +62,11 @@ export default [
     { method: 'put', resource: '/usuarioambiente', auth: KeyMiddleware, task: usuarioAmbienteController.alter },
     { method: 'delete', resource: '/usuarioambiente', auth: KeyMiddleware, task: usuarioAmbienteController.delete },
 
-    { method: 'get', resource: '/tag', auth: TokenMiddleware, task: tagController.find },
-    { method: 'get', resource: '/tag/resumo', auth: TokenMiddleware, task: tagController.findResumo },
-    { method: 'post', resource: '/tag', auth: TokenMiddleware, task: tagController.create },
-    { method: 'put', resource: '/tag/:id', auth: TokenMiddleware, task: tagController.alter },
-    { method: 'delete', resource: '/tag/:id', auth: TokenMiddleware, task: tagController.delete },
-
     { method: 'get', resource: '/executavel', auth: TokenMiddleware, task: executavelController.find },
     { method: 'get', resource: '/executavel/detalhado', auth: TokenMiddleware, task: executavelController.findDetalhado },
     { method: 'post', resource: '/executavel', auth: TokenMiddleware, task: executavelController.create },
-    { method: 'put', resource: '/executavel', auth: KeyMiddleware, task: executavelController.alter },
-    { method: 'delete', resource: '/executavel', auth: TokenMiddleware, task: executavelController.delete },
+    { method: 'put', resource: '/executavel/:id', auth: TokenMiddleware, task: executavelController.alter },
+    { method: 'delete', resource: '/executavel/:id', auth: TokenMiddleware, task: executavelController.delete },
 
     { method: 'get', resource: '/chaveambiente', auth: TokenMiddleware, task: chaveambienteController.find },
     { method: 'get', resource: '/chaveambiente/valida', auth: TokenMiddleware, task: chaveambienteController.validaChave },

@@ -43,8 +43,8 @@ export default {
             return responseHandler(204);
         }
     },
-    async deleteAll({ body }) {
-        const entity = await service.deleteAll(body);
+    async deleteAll({ body, params }) {
+        const entity = await service.deleteAll(params);
         if (entity instanceof Error) {
             return responseHandler(500, { message: entity.message, stack: entity.stack });
         } else {

@@ -51,7 +51,6 @@ export default {
             ['exeidusuarioambiente', body.exeidusuarioambiente],
             ['exenome', body.exenome],
             ['exedescricao', body.exedescricao],
-            ['exedatacriacao', body.exedatacriacao],
             ['exeversao', body.exeversao],
             ['exeurl', body.exeurl],
         ])

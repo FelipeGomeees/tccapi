@@ -17,6 +17,15 @@ export default {
         .commit();
     },
 
+    findPorAmbiente(idAmb) {
+        return new Builder(tabela)
+        .select(['tag.*'])
+        .leftJoin('usuarioambiente', 'usuarioambiente.id', '=', 'tagidusuarioambiente')
+        .leftJoin('ambiente', 'ambiente.id', '=', 'usaidambiente')
+        .where('ambiente.id', '=', idAmb)
+        .commit();
+    },
+
     async search(queryWhere) {
         let where = '';
         const whereKeys = Object.keys(queryWhere);

@@ -48,4 +48,13 @@ export default {
             return responseHandler(204);
         }
     },
+
+    async findPorAmbiente({ params }) {
+        const entity = await service.findPorAmbiente(params.idAmb);
+        if (entity instanceof Error) {
+            return responseHandler(500, { message: entity.message, stack: entity.stack });
+        } else {
+            return responseHandler(200, entity);
+        }
+    }
 }

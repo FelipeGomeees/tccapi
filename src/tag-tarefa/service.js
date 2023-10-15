@@ -10,8 +10,8 @@ export default {
         return entity;
     },
     async create(body) {
-        const entity = await repository.create(body);
-        
+        const entity = await repository.create(body.dados);
+
         return entity;
     },
 
@@ -21,8 +21,7 @@ export default {
     },
 
     async delete(req) {
-        // const tagsDeletadas = await tagExecutavelRepository.deleteAll(req.params);
-        const entity = await repository.delete(req.params);
+        const entity = await repository.delete(query.where);
         return entity;
     },
 
@@ -31,14 +30,8 @@ export default {
         return entity;
     },
 
-    async findDetalhado(body) {
-        const entity = await repository.findDetalhado(body);
-        // const newEntity = [];
-        // for (let i = 0; i < entity.length; i += 1) {
-        //     const tags = await tagExecutavelRepository.findSpecific(entity[i]);
-        //     const dados = entity[i];
-        //     newEntity.push({ ...dados, tags });
-        // }
+    async findDetalhado(id) {
+        const entity = await repository.findDetalhado(id);
         return entity;
     },
 }

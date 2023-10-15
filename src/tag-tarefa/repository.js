@@ -1,4 +1,4 @@
-const tabela = 'tarefa';
+const tabela = 'tagtarefa';
 import { Builder } from "../utils/accel.js";
 import oldBuilder from "../utils/queryBuilder.js";
 
@@ -10,12 +10,18 @@ export default {
         return entity;
     },
 
-    async findDetalhado(dados) {
-    return new Builder(tabela)
+    async find(params) {
+        const entity = await oldBuilder(
+            `SELECT * FROM ${tabela}`,
+        )
+        return entity;
+    },
+
+    async findDetalhado(id) {
+        return new Builder(tabela)
         .select('*')
-        .leftJoin('executavel', 'taridexecutavel', '=', 'executavel.id')
-        .leftJoin('colaborador', 'colidusuarioambiente', '=', dados.idUsuAmb)
-        .where('taridambiente', '=', dados.idAmb) // Variação do WHERE para utilizar valores de colunas
+        .leftJoin('ambiente', 'ambidambiente', '=', 'taridusuarioambiente')
+        .where('ambidambiente', '=', id)
         .commit();
     },
 
@@ -44,15 +50,9 @@ export default {
     async create(body) {
         return new Builder(tabela)
         .insert([
-            ['taridambiente', body.taridambiente],
-            ['tarnome', body.tarnome],
-            ['tardescricao', body.tardescricao],
-            ['taridexecutavel', body.taridexecutavel],
-            ['tardataabertura', body.tardataabertura],
-            ['tardataprazo', body.tardataprazo],
-            ['taridtarefapai', body.taridtarefapai],
-            ['tarvisibilidade', body.tarvisibilidade],
-            ['tarpedirconvite', body.tarpedirconvite],
+            ['tatidusuarioambiente', body.tatidusuarioambiente],
+            ['tatidtarefa', body.tatidtarefa],
+            ['tatidtag', body.tatidtag],
         ])
         .commit();
     },

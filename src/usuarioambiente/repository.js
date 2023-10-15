@@ -51,10 +51,11 @@ export default {
         const entity = (await pool.query(query)).rows;
         return entity;
     },
-    async del(params) {
-        const query = `DELETE FROM ${tabela}`;
-        const entity = (await pool.query(query)).rows;
-        return entity;
+    async delete(params) {
+        return new Builder(tabela)
+        .delete()
+        .where('id', '=', params.idUseAmb)
+        .commit();
     },
     async recent(id) {
         return new Builder(tabela)
@@ -64,6 +65,13 @@ export default {
             .orderBy('usadataultimoacesso', 'desc')
             .commit();
     },
-}
 
+    async findDetalhado(body) {
+        return new Builder(tabela)
+        .select(['usuarioambiente.id','usaapelido','usunome','usuemail','usadescricao', 'usadataprimeiroacesso'])
+        .leftJoin('usuario', 'usuario.id','=','usaidusuario')
+        .orderBy('usaapelido', 'desc')
+        .commit();
+    },
+}
 

@@ -41,4 +41,11 @@ export default {
         const entity = await repository.delete(req.params);
         return entity;
     },
+
+    async findPorAmbiente(idAmb) {
+        const entity = await repository.findPorAmbiente(idAmb);
+        return entity;
+    },
+
+    
 }

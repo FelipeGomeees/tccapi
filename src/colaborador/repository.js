@@ -1,4 +1,4 @@
-const tabela = 'tarefa';
+const tabela = 'colaborador';
 import { Builder } from "../utils/accel.js";
 import oldBuilder from "../utils/queryBuilder.js";
 
@@ -10,12 +10,11 @@ export default {
         return entity;
     },
 
-    async findDetalhado(dados) {
-    return new Builder(tabela)
+    async findDetalhado(id) {
+        return new Builder(tabela)
         .select('*')
-        .leftJoin('executavel', 'taridexecutavel', '=', 'executavel.id')
-        .leftJoin('colaborador', 'colidusuarioambiente', '=', dados.idUsuAmb)
-        .where('taridambiente', '=', dados.idAmb) // Variação do WHERE para utilizar valores de colunas
+        .leftJoin('ambiente', 'ambidambiente', '=', 'taridusuarioambiente')
+        .where('ambidambiente', '=', id)
         .commit();
     },
 
@@ -44,15 +43,12 @@ export default {
     async create(body) {
         return new Builder(tabela)
         .insert([
-            ['taridambiente', body.taridambiente],
-            ['tarnome', body.tarnome],
-            ['tardescricao', body.tardescricao],
-            ['taridexecutavel', body.taridexecutavel],
-            ['tardataabertura', body.tardataabertura],
-            ['tardataprazo', body.tardataprazo],
-            ['taridtarefapai', body.taridtarefapai],
-            ['tarvisibilidade', body.tarvisibilidade],
-            ['tarpedirconvite', body.tarpedirconvite],
+            ['colidusuarioambiente', body.colidusuarioambiente],
+            ['colidtarefa', body.colidtarefa],
+            ['coldataentrada', body.coldataentrada],
+            ['coldatafinalizacao', body.coldatafinalizacao],
+            ['colcargo', body.colcargo],
+            ['colidresponsavel', body.colidresponsavel],
         ])
         .commit();
     },

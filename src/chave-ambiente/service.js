@@ -27,12 +27,12 @@ export default {
         return entity;
     },
 
-    async newInvite(id) {
+    async newInvite(dados) {
         try {
             const data = new Date().toISOString();
             const chave = uuid();
             const createBody = {
-                chaidambiente: id,
+                chaidambiente: dados.id,
                 chachave: chave,
                 chadataexpiracao: data,
             }

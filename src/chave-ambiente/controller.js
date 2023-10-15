@@ -51,7 +51,7 @@ export default {
         }
     },
     async invite({ body }) {
-        const entity = await service.newInvite(body.id);
+        const entity = await service.newInvite(body.dados);
         if (entity instanceof Error) {
             return responseHandler(500, { message: entity.message, stack: entity.stack });
         } else {

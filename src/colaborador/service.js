@@ -34,4 +34,10 @@ export default {
         const entity = await repository.findDetalhado(id);
         return entity;
     },
+    
+    async findColaboradoresTarefa(id) {
+        const entity = await repository.findColaboradoresTarefa(id);
+        return entity;
+    },
+
 }

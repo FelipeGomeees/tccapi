@@ -8,12 +8,16 @@ export default {
         const entity = await repository.find(body);
         return entity;
     },
-    async findDetalhado(params) {
-        const entity = await repository.findDetalhado(params.idUsuAmb);
+    async search(body) {
+        const entity = await repository.search(body);
         return entity;
     },
-    async search(query) {
-        const entity = await repository.search(query.where);
+    async findDetalhado(query) {
+        const entity = await repository.findDetalhado(query);
+        return entity;
+    },
+    async searchDetalhado(query) {
+        const entity = await repository.searchDetalhado(query);
         return entity;
     },
 

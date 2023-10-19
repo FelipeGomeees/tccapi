@@ -71,6 +71,15 @@ export default {
             .orderBy('usadataultimoacesso', 'desc')
             .commit();
     },
+
+    async findColaboradoresTarefa(idTarefa) {
+        return new Builder(tabela)
+            .select(['colaborador.*', 'usuarioambiente.*', 'usuario.usunome'])
+            .leftJoin('usuarioambiente', 'usuarioambiente.id', '=', 'colidusuarioambiente')
+            .leftJoin('usuario', 'usuario.id', '=', 'usaidusuario')
+            .where('colidtarefa', '=', idTarefa)
+            .commit();
+    },
 }
 
 

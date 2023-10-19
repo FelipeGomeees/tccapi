@@ -17,6 +17,14 @@ export default {
         return entity;
     },
 
+    async findTagTarefa(idTarefa) {
+        return new Builder(tabela)
+            .select(['tag.*'])
+            .leftJoin('tag', 'tag.id', '=', 'tatidtag')
+            .where('tatidtarefa', '=', idTarefa)
+            .commit();
+    },
+
     async findDetalhado(id) {
         return new Builder(tabela)
         .select('*')

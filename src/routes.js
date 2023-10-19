@@ -11,6 +11,7 @@ import tagExecutavelRoutes from './tag-executavel/routes.js';
 import tarefaRoutes from './tarefa/routes.js';
 import colaboradorRoutes from './colaborador/routes.js';
 import tagTarefaRoutes from './tag-tarefa/routes.js';
+import forumRoutes from './forum/routes.js';
 
 const rotas = usuarioRoutes.concat(
     tagRoutes,
@@ -25,6 +26,7 @@ const rotas = usuarioRoutes.concat(
     executavelRoutes,
     tarefaRoutes,
     colaboradorRoutes,
+    forumRoutes,
 )
 export default rotas
 

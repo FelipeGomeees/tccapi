@@ -34,4 +34,9 @@ export default {
         const entity = await repository.findDetalhado(id);
         return entity;
     },
+
+    async findTagTarefa(id) {
+        const entity = await repository.findTagTarefa(id);
+        return entity;
+    },
 }

@@ -1,4 +1,4 @@
-const tabela = 'tarefa';
+const tabela = 'forum';
 import { Builder } from "../utils/accel.js";
 import oldBuilder from "../utils/queryBuilder.js";
 
@@ -10,12 +10,12 @@ export default {
         return entity;
     },
 
-    async findDetalhado(dados) {
+    async findComentariosTarefa(id, tabelaa) {
     return new Builder(tabela)
-        .select(['*', 'tarefa.id as idTarefa'])
-        .leftJoin('executavel', 'taridexecutavel', '=', 'executavel.id')
+        .select(['*'])
+        .leftJoin(tabelaa, `${tabelaa}.id`, '=', 'foridtipoforum')
         // .leftJoin('colaborador', 'colidusuarioambiente', '=', dados.idUsuAmb)
-        .where('taridambiente', '=', dados.idAmb) // Variação do WHERE para utilizar valores de colunas
+        .where(`${tabelaa}.id`, '=', id) // Variação do WHERE para utilizar valores de colunas
         //.where('colidusuario', '=', dados.idAmb)
         .commit();
     },

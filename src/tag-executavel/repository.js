@@ -31,6 +31,7 @@ export default {
         .select('*')
         .leftJoin('tag', 'taeidtag', '=', 'tag.id')
         .where('taeidexecutavel', '=', query.id)
+        .orderBy('tagprioridade', 'asc')
         .commit();
     },
 
@@ -78,7 +79,15 @@ export default {
         .delete()
         .where('taeidexecutavel', '=', params.id)
         .commit();
-    }
+    },
+
+    async findTagExecutavelTarefa(idExecutavel) {
+        return new Builder(tabela)
+            .select(['tag.*'])
+            .leftJoin('tag', 'tag.id', '=', 'taeidtag')
+            .where('taeidexecutavel', '=', idExecutavel)
+            .commit();
+    },
 }
 
 

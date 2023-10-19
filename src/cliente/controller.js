@@ -17,9 +17,13 @@ export default {
         }
     },
 
-    async searchDetalhado({ params }) {
+    async findDetalhado({ query }) {
         let entity = null;
-        entity = await service.searchDetalhado(params);
+        if (Object.keys(query).length > 0) {
+            entity = await service.searchDetalhado(query);
+        } else {
+            entity = await service.findDetalhado();
+        }
         if (entity instanceof Error) {
             return responseHandler(500, { message: entity.message, stack: entity.stack });
         } else {

@@ -52,4 +52,9 @@ export default {
         const entity = await repository.deleteAll(req);
         return entity;
     },
+
+    async findTagExecutavelTarefa(id) {
+        const entity = await repository.findTagExecutavelTarefa(id);
+        return entity;
+    },
 }

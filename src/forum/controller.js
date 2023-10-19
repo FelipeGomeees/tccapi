@@ -27,8 +27,8 @@ export default {
         }
     },
 
-    async findDetalhado({ params }) {
-        let entity = await service.findDetalhado(params);
+    async findTarefa({ params }) {
+        let entity = await service.findComentariosTarefa(params);
         if (entity instanceof Error) {
             return responseHandler(500, { message: entity.message, stack: entity.stack });
         } else {

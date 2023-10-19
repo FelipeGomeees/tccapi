@@ -8,8 +8,8 @@ export default {
         const entity = await repository.find(body);
         return entity;
     },
-    async findDetalhado(params) {
-        const entity = await repository.findDetalhado(params.idUsuAmb);
+    async findComentariosTarefa(params) {
+        const entity = await repository.findComentariosTarefa(params.id, params.tabela);
         return entity;
     },
     async search(query) {

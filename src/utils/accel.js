@@ -52,6 +52,13 @@ export class Builder {
         return this;
     }
     where(coluna, condicao, valor) {
+        if (!condicao && !valor && typeof coluna === 'string') {
+            if (this.validate()) {
+                return this;
+            }
+            this.queryString = `${this.queryString} WHERE ${coluna}`;
+            return this;
+        }
         if (this.validate()) {
             return this;
         }
@@ -64,6 +71,35 @@ export class Builder {
             this.error = new Error(`Parametro informado no WHERE não é string ou numero`);
         }
         this.queryString = `${this.queryString} WHERE ${coluna} ${condicao} ${temp.valor}`;
+        // FAZER AND WHERE
+        return this;
+    }
+
+    whereAll( queryWhere ) {
+        if (this.validate()) {
+            return this;
+        }
+
+        if (typeof queryWhere !== 'object') {
+            this.error = new Error(`Em um WHERE ALL o parametro precisa ser um objeto`);
+        }
+
+        const whereValues = Object.values(queryWhere);
+        for (let i = 0; i < whereValues.length; i++) {
+            if (typeof whereValues[i] === 'undefined') {
+                this.error = new Error(`Algum valor do WHERE ALL não foi definido`);
+            }
+        }   
+
+        let where = '';
+        const whereKeys = Object.keys(queryWhere);
+        for (let i = 0; i < whereKeys.length; i++) {
+            if (i > 0) {
+                where = where + ' and '
+            }
+            where = where + `${(Object.keys(queryWhere))[i]} = '${(Object.values(queryWhere))[i]}'`;
+        }   
+        this.queryString = `${this.queryString} WHERE ${where}`;
         // FAZER AND WHERE
         return this;
     }

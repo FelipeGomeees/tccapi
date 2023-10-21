@@ -23,6 +23,14 @@ export default {
         .commit();
     },
 
+    async searchDetalhado(query) {
+        return new Builder(tabela)
+            .select(['*', 'cliente.id as idCliente'])
+            .leftJoin('usuarioambiente', 'cliidusuarioambiente', '=', 'usuarioambiente.id')
+            .whereAll(query.where)
+            .commit();
+        },
+
      async create(body) {
         return new Builder(tabela)
         .insert([

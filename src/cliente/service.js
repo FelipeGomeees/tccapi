@@ -18,12 +18,13 @@ export default {
                 cliente: null,
                 contato: null,
             }
-            temp.tarefa = entity[i];
-            temp.contato= await clienteContatoService.search(entity[i].idCliente);
+            temp.cliente = entity[i];
+            temp.contato= await clienteContatoService.search({where: { clcidcliente: entity[i].idcliente}});
             final.push(temp);
         }
         return final;
     },
+
     async searchDetalhado(query) {
         const entity = await repository.searchDetalhado(query);
         return entity;
@@ -54,43 +55,5 @@ export default {
     async recent(id) {
         const entity = await repository.recent(id);
         return entity;
-    },
-
-    async findDetalhado(params) {
-        const entity = await repository.findDetalhado(params);  
-        const final = [];
-        for (let i = 0; i < entity.length; i++) {
-            const temp = {
-                tarefa: null,
-                tags: null,
-                colaboradores: null,
-                exectags: null,
-            }
-            temp.tarefa = entity[i];
-            temp.tags = await tagTarefaService.findTagTarefa(entity[i].idtarefa);
-            temp.colaboradores = await colaboradorService.findColaboradoresTarefa(entity[i].idtarefa);
-            temp.exectags = await tagExecutavelService.findTagExecutavelTarefa(entity[i].taridexecutavel);
-            final.push(temp);
-        }
-        return final;
-    },
-
-    async searchDetalhado(params) {
-        const entity = await repository.searchDetalhado(params.idTar);
-        const final = [];
-        for (let i = 0; i < entity.length; i++) {
-            const temp = {
-                tarefa: null,
-                tags: null,
-                colaboradores: null,
-                exectags: null,
-            }
-            temp.tarefa = entity[i];
-            temp.tags = await tagTarefaService.findTagTarefa(params.idTar);
-            temp.colaboradores = await colaboradorService.findColaboradoresTarefa(params.idTar);
-            temp.exectags = await tagExecutavelService.findTagExecutavelTarefa(entity[i].taridexecutavel);
-            final.push(temp);
-        }
-        return final;
     },
 }

@@ -1,7 +1,5 @@
 import repository from './repository.js';
-import colaboradorService from '../colaborador/service.js';
-import tagTarefaService from '../tag-tarefa/service.js';
-import tagExecutavelService from '../tag-executavel/service.js';
+import clienteContatoService from '../cliente-contato/service.js';
 
 export default {
     async find(body) {
@@ -12,9 +10,19 @@ export default {
         const entity = await repository.search(body);
         return entity;
     },
-    async findDetalhado(query) {
-        const entity = await repository.findDetalhado(query);
-        return entity;
+    async findDetalhado() {
+        const entity = await repository.findDetalhado();
+        const final = [];
+        for (let i = 0; i < entity.length; i++) {
+            const temp = {
+                cliente: null,
+                contato: null,
+            }
+            temp.tarefa = entity[i];
+            temp.contato= await clienteContatoService.search(entity[i].idCliente);
+            final.push(temp);
+        }
+        return final;
     },
     async searchDetalhado(query) {
         const entity = await repository.searchDetalhado(query);
@@ -23,31 +31,12 @@ export default {
 
     async create(dados) {
         const newBody = { ...dados };
-        newBody.tarefa.tardataabertura = new Date().toISOString();
-        newBody.tarefa.tarvisibilidade = Number(dados.tarefa.tarvisibilidade);
-        newBody.tarefa.tarpedirconvite = Number(dados.tarefa.tarpedirconvite);
-        const entity = await repository.create(newBody.tarefa);
-        dados.colaboradores.forEach(el => {
-            const colaboradorBody = { 
-                colidusuarioambiente: el,
-                colidtarefa: entity[0].id,
-                colidresponsavel: newBody.meta.responsavel,
-                coldataentrada: new Date().toISOString(),
-                coldatafinalizacao: null,
-                colcargo: 0,
-            };
-            entity[0].id
-            colaboradorService.create({ dados: colaboradorBody });
+        newBody.cliente.clidatacriacao = new Date().toISOString();
+        const entity = await repository.create(newBody.cliente);
+        dados.contato.forEach(el => {
+            const newContato = { clcidcliente: entity[0].id, ...el};
+            clienteContatoService.create(newContato);
         });
-        dados.tags.forEach(el => {
-            const tagBody = { 
-                tatidusuarioambiente: newBody.meta.responsavel,
-                tatidtarefa: entity[0].id,
-                tatidtag: el,
-            };
-            tagTarefaService.create({ dados: tagBody });
-        });
-        
 
         return entity;
     },

@@ -55,36 +55,43 @@ export default {
     async create(body) {
         return new Builder(tabela)
         .insert([
-            ['taridambiente', body.taridambiente],
-            ['tarnome', body.tarnome],
-            ['tardescricao', body.tardescricao],
-            ['taridexecutavel', body.taridexecutavel],
-            ['tardataabertura', body.tardataabertura],
-            ['tardataprazo', body.tardataprazo],
-            ['taridtarefapai', body.taridtarefapai],
-            ['tarvisibilidade', body.tarvisibilidade],
-            ['tarpedirconvite', body.tarpedirconvite],
+            ['foridusuarioambiente', body.foridusuarioambiente],
+            ['forcomentario', body.forcomentario],
+            ['fortipoforum', body.fortipoforum],
+            ['foridtipoforum', body.foridtipoforum],
+            ['fordatacriacao', new Date().toISOString()],
+            ['fordataedicao', body.fordataedicao],
+            ['forreacaopositiva', body.forreacaopositiva],
+            ['forreacaonegativa', body.forreacaonegativa],
+            ['forestrela', body.forestrela],
+            ['foridforum', body.foridforum],
         ])
         .commit();
     },
 
-    async alter(params) {
-        const query = `UPDATE ${tabela} SET`;
-        const entity = (await pool.query(query)).rows;
-        return entity;
-    },
-    async del(params) {
-        const query = `DELETE FROM ${tabela}`;
-        const entity = (await pool.query(query)).rows;
-        return entity;
-    },
-    async recent(id) {
+    async alter(body, params) {
         return new Builder(tabela)
-            .select(['ambiente.id as idambiente','ambiente.ambnome', 'ambiente.ambicone'])
-            .leftJoin('ambiente', 'ambiente.id','=','usaidambiente')
-            .where('usaidusuario', '=', id)
-            .orderBy('usadataultimoacesso', 'desc')
-            .commit();
+        .set([
+            ['foridusuarioambiente', body.foridusuarioambiente],
+            ['forcomentario', body.forcomentario],
+            ['fortipoforum', body.fortipoforum],
+            ['foridtipoforum', body.foridtipoforum],
+            ['fordatacriacao', body.fordatacriacao],
+            ['fordataedicao', body.fordataedicao],
+            ['forreacaopositiva', body.forreacaopositiva],
+            ['forreacaonegativa', body.forreacaonegativa],
+            ['forestrela', body.forestrela],
+            ['foridforum', body.foridforum],
+        ])
+        .where('id', '=', params.id)
+        .commit();
+    },
+
+    async delete(params) {
+        return new Builder(tabela)
+        .delete()
+        .where('id', '=', params.id)
+        .commit();
     },
 }
 

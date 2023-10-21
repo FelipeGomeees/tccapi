@@ -8,17 +8,38 @@ export default {
         const entity = await repository.find(body);
         return entity;
     },
-    async findComentariosTarefa(params) {
-        const entity = await repository.findComentariosTarefa(params.id, params.tabela);
+    async search(body) {
+        const entity = await repository.search(body);
         return entity;
     },
-    async search(query) {
-        const entity = await repository.search(query.where);
+    async findDetalhado(params) {
+        const whereCliente = {
+            usaidambiente: params.idAmb,
+        }
+        const entity = await repository.searchDetalhado(whereCliente);
+        const final = [];
+        for (let i = 0; i < entity.length; i++) {
+            const temp = {
+                cliente: null,
+                contato: null,
+            }
+            temp.cliente = entity[i];
+           const where = {
+                clcidcliente: entity[i].idCliente,
+            }
+            temp.contato= await clienteContatoService.search(where);
+            final.push(temp);
+        }
+        return final;
+    },
+    async searchDetalhado(query) {
+        const entity = await repository.searchDetalhado(query);
         return entity;
     },
 
     async create(dados) {
         const entity = await repository.create(dados);
+        
         return entity;
     },
 

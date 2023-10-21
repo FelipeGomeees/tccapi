@@ -10,19 +10,21 @@ export default {
         .commit();
     },
 
-    async findResumo() {
-        return new Builder(tabela)
-        .select(['tag.*', 'tatdescricao'])
-        .leftJoin('tagtipo', 'tagidtagtipo', '=', 'tagtipo.id')
-        .commit();
-    },
-
-    findPorAmbiente(idAmb) {
+    async findPorAmbiente(idAmb) {
         return new Builder(tabela)
         .select(['tag.*'])
         .leftJoin('usuarioambiente', 'usuarioambiente.id', '=', 'tagidusuarioambiente')
         .leftJoin('ambiente', 'ambiente.id', '=', 'usaidambiente')
         .where('ambiente.id', '=', idAmb)
+        .commit();
+    },
+
+    async searchPorAmbiente(query) {
+        return new Builder(tabela)
+        .select(['tag.*'])
+        .leftJoin('usuarioambiente', 'usuarioambiente.id', '=', 'tagidusuarioambiente')
+        .leftJoin('ambiente', 'ambiente.id', '=', 'usaidambiente')
+        .whereAll(query.where)
         .commit();
     },
 
@@ -49,7 +51,7 @@ export default {
             ['tagnome', body.tagnome],
             ['tagdescricao', body.tagdescricao],
             ['tagprioridade', body.tagprioridade],
-            ['tagidtagtipo', body.tagidtagtipo],
+            ['tagtipo', body.tagtipo],
             ['tagcor', body.tagcor],
             ['tagdark', body.tagdark],
             ['tagdatacriacao', body.tagdatacriacao],
@@ -64,7 +66,7 @@ export default {
             ['tagnome', body.tagnome],
             ['tagdescricao', body.tagdescricao],
             ['tagprioridade', body.tagprioridade],
-            ['tagidtagtipo', body.tagidtagtipo],
+            ['tagtipo', body.tagtipo],
             ['tagcor', body.tagcor],
             ['tagdark', body.tagdark],
             ['tagdatacriacao', body.tagdatacriacao],

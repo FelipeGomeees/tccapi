@@ -10,16 +10,6 @@ export default {
         } else {
             entity = await service.find();
         }
-        return responseHandler(200, entity);
-    },
-
-    async all({ query }) {
-        let entity = await service.all(query);
-        return responseHandler(200, entity);
-    },
-
-    async create({ body }) {
-        const entity = await service.create(body);
         if (entity instanceof Error) {
             return responseHandler(500, { message: entity.message, stack: entity.stack });
         } else {
@@ -27,12 +17,44 @@ export default {
         }
     },
 
-    async alter({ body, params }) {
-        const entity = await service.alter(body, params);
+    async findDetalhado({ query }) {
+        let entity = null;
+        if (Object.keys(query).length > 0) {
+            entity = await service.searchDetalhado(query);
+        } else {
+            entity = await service.findDetalhado();
+        }
         if (entity instanceof Error) {
             return responseHandler(500, { message: entity.message, stack: entity.stack });
         } else {
-            return responseHandler(201);
+            return responseHandler(201, entity);
+        }
+    },
+
+    async findDetalhado({ params }) {
+        let entity = await service.findDetalhado(params);
+        if (entity instanceof Error) {
+            return responseHandler(500, { message: entity.message, stack: entity.stack });
+        } else {
+            return responseHandler(201, entity);
+        }
+    },
+
+    async create({ body }) {
+        const entity = await service.create(body.dados);
+        if (entity instanceof Error) {
+            return responseHandler(500, { message: entity.message, stack: entity.stack });
+        } else {
+            return responseHandler(201, entity);
+        }
+    },
+
+    async alter(req) {
+        const entity = await service.alter(req);
+        if (entity instanceof Error) {
+            return responseHandler(500, { message: entity.message, stack: entity.stack });
+        } else {
+            return responseHandler(200, entity);
         }
     },
     async delete(req) {
@@ -40,12 +62,11 @@ export default {
         if (entity instanceof Error) {
             return responseHandler(500, { message: entity.message, stack: entity.stack });
         } else {
-            return responseHandler(204);
+            return responseHandler(200, entity);
         }
     },
-
-    async findPorAmbiente({ params }) {
-        const entity = await service.findPorAmbiente(params.idAmb);
+    async recent({ query }) {
+        const entity = await service.recent(query.id);
         if (entity instanceof Error) {
             return responseHandler(500, { message: entity.message, stack: entity.stack });
         } else {
@@ -53,12 +74,5 @@ export default {
         }
     },
 
-    async findPorAmbienteDividido({ params }) {
-        const entity = await service.findPorAmbienteDividido(params.idAmb);
-        if (entity instanceof Error) {
-            return responseHandler(500, { message: entity.message, stack: entity.stack });
-        } else {
-            return responseHandler(200, entity);
-        }
-    }
+    
 }

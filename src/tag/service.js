@@ -53,4 +53,16 @@ export default {
         const entity = await repository.findPorAmbiente(idAmb);
         return entity;
     },
+
+    async findPorAmbienteDividido(idAmb) {
+        const entity = {
+            geral: null,
+            tipo: null,
+            estado: null,
+        }
+        entity.geral = await repository.searchPorAmbiente({ where: {usaidambiente: idAmb, tagtipo: 0} });
+        entity.tipo = await repository.searchPorAmbiente({ where: {usaidambiente: idAmb, tagtipo: 1} });
+        entity.estado = await repository.searchPorAmbiente({ where: {usaidambiente: idAmb, tagtipo: 2} });
+        return entity;
+    },
 }

@@ -1,6 +1,5 @@
-const tabela = 'tarefa';
+const tabela = 'cliente';
 import { Builder } from "../utils/accel.js";
-import oldBuilder from "../utils/queryBuilder.js";
 
 export default {
     async find() {
@@ -18,24 +17,11 @@ export default {
 
     async findDetalhado(dados) {
     return new Builder(tabela)
-        .select(['*', 'tarefa.id as idTarefa'])
-        .leftJoin('executavel', 'taridexecutavel', '=', 'executavel.id')
-        // .leftJoin('colaborador', 'colidusuarioambiente', '=', dados.idUsuAmb)
-        .where('taridambiente', '=', dados.idAmb) // Variação do WHERE para utilizar valores de colunas
-        //.where('colidusuario', '=', dados.idAmb)
+        .select(['*', 'cliente.id as idCliente'])
+        .leftJoin('usuarioambiente', 'cliidusuarioambiente', '=', 'usuarioambiente.id')
+        // .where('usaidambiente', '=', dados.idAmb)
         .commit();
     },
-
-    async searchDetalhado(dados) {
-        return new Builder(tabela)
-            .select(['*', 'tarefa.id as idTarefa'])
-            .leftJoin('executavel', 'taridexecutavel', '=', 'executavel.id')
-            // .leftJoin('colaborador', 'colidusuarioambiente', '=', dados.idUsuAmb)
-            .where('taridambiente', '=', dados.idAmb) // Variação do WHERE para utilizar valores de colunas
-            //.where('colidusuario', '=', dados.idAmb)
-            .commit();
-     },
-
 
      async create(body) {
         return new Builder(tabela)

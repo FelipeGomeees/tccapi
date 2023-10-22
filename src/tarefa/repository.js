@@ -64,7 +64,37 @@ export default {
             ['taridtarefapai', body.taridtarefapai],
             ['tarvisibilidade', body.tarvisibilidade],
             ['tarpedirconvite', body.tarpedirconvite],
+            ['taridcliente', body.taridcliente],
         ])
+        .commit();
+    },
+
+    async relatorio(params) {
+        return new Builder(tabela)
+        .raw(`
+            SELECT
+                t.id as codigo,
+                t.tarnome as nome,
+                TO_CHAR(now() - t.tardataabertura, 'mm:dd:hh24h:mim') as tempoabertura,
+                tt2.tagnome as estado
+            FROM
+                tarefa AS t
+            LEFT JOIN (
+                SELECT
+                    tt.tatidtarefa,
+                    tag.id,
+                    tag.tagnome
+                FROM
+                    tagtarefa AS tt
+                JOIN
+                    tag ON tt.tatidtag = tag.id
+                WHERE
+                    tag.tagtipo = 2
+            ) AS tt2 ON t.id = tt2.tatidtarefa
+            WHERE
+                (t.tarfinalizado IS NULL OR t.tarfinalizado <> 1)
+                AND (t.tararquivado IS NULL OR t.tararquivado <> 1);
+        `)
         .commit();
     },
 

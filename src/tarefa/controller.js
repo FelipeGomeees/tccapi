@@ -36,6 +36,15 @@ export default {
         }
     },
 
+    async findRelatorio({ params }) {
+        let entity = await service.findRelatorio(params);
+        if (entity instanceof Error) {
+            return responseHandler(500, { message: entity.message, stack: entity.stack });
+        } else {
+            return responseHandler(201, entity);
+        }
+    },
+
     async create({ body }) {
         const entity = await service.create(body.dados);
         if (entity instanceof Error) {

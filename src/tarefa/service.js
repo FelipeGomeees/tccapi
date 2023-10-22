@@ -2,6 +2,7 @@ import repository from './repository.js';
 import colaboradorService from '../colaborador/service.js';
 import tagTarefaService from '../tag-tarefa/service.js';
 import tagExecutavelService from '../tag-executavel/service.js';
+import tagClienteService from '../cliente/service.js';
 
 export default {
     async find(body) {
@@ -10,6 +11,10 @@ export default {
     },
     async findDetalhado(params) {
         const entity = await repository.findDetalhado(params.idUsuAmb);
+        return entity;
+    },
+    async findRelatorio(params) {
+        const entity = await repository.findDetalhado(params);
         return entity;
     },
     async search(query) {
@@ -23,28 +28,29 @@ export default {
         newBody.tarefa.tarvisibilidade = Number(dados.tarefa.tarvisibilidade);
         newBody.tarefa.tarpedirconvite = Number(dados.tarefa.tarpedirconvite);
         const entity = await repository.create(newBody.tarefa);
-        dados.colaboradores.forEach(el => {
-            const colaboradorBody = { 
-                colidusuarioambiente: el,
-                colidtarefa: entity[0].id,
-                colidresponsavel: newBody.meta.responsavel,
-                coldataentrada: new Date().toISOString(),
-                coldatafinalizacao: null,
-                colcargo: 0,
-            };
-            entity[0].id
-            colaboradorService.create({ dados: colaboradorBody });
-        });
-        dados.tags.forEach(el => {
-            const tagBody = { 
-                tatidusuarioambiente: newBody.meta.responsavel,
-                tatidtarefa: entity[0].id,
-                tatidtag: el,
-            };
-            tagTarefaService.create({ dados: tagBody });
-        });
+        if (entity[0].id) {
+            dados.colaboradores.forEach(el => {
+                const colaboradorBody = { 
+                    colidusuarioambiente: el,
+                    colidtarefa: entity[0].id,
+                    colidresponsavel: newBody.meta.responsavel,
+                    coldataentrada: new Date().toISOString(),
+                    coldatafinalizacao: null,
+                    colcargo: 0,
+                };
+                entity[0].id
+                colaboradorService.create({ dados: colaboradorBody });
+            });
+            dados.tags.forEach(el => {
+                const tagBody = { 
+                    tatidusuarioambiente: newBody.meta.responsavel,
+                    tatidtarefa: entity[0].id,
+                    tatidtag: el,
+                };
+                tagTarefaService.create({ dados: tagBody });
+            });
+        }
         
-
         return entity;
     },
 
@@ -72,11 +78,13 @@ export default {
                 tags: null,
                 colaboradores: null,
                 exectags: null,
+                cliente: null,
             }
             temp.tarefa = entity[i];
             temp.tags = await tagTarefaService.findTagTarefa(entity[i].idtarefa);
             temp.colaboradores = await colaboradorService.findColaboradoresTarefa(entity[i].idtarefa);
             temp.exectags = await tagExecutavelService.findTagExecutavelTarefa(entity[i].taridexecutavel);
+            temp.cliente = await tagClienteService.search({ where: { cliidtarefa: entity[i].taridcliente }});
             final.push(temp);
         }
         return final;
@@ -91,11 +99,13 @@ export default {
                 tags: null,
                 colaboradores: null,
                 exectags: null,
+                cliente: null,
             }
             temp.tarefa = entity[i];
             temp.tags = await tagTarefaService.findTagTarefa(params.idTar);
             temp.colaboradores = await colaboradorService.findColaboradoresTarefa(params.idTar);
             temp.exectags = await tagExecutavelService.findTagExecutavelTarefa(entity[i].taridexecutavel);
+            temp.cliente = await tagClienteService.search({ where: { cliidtarefa: entity[i].taridcliente }});
             final.push(temp);
         }
         return final;

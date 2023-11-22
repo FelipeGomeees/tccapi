@@ -52,7 +52,11 @@ export default {
     },
 
     async findDetalhado({ query }) {
-        const entity =await service.findDetalhado();
-        return responseHandler(200, entity);
+        const entity =await service.findDetalhado(query);
+        if (entity instanceof Error) {
+            return responseHandler(500, { message: entity.message, stack: entity.stack });
+        } else {
+            return responseHandler(200, entity);
+        }
     },
 }

@@ -66,10 +66,12 @@ export default {
             .commit();
     },
 
-    async findDetalhado(body) {
+    async findDetalhado(query) {
         return new Builder(tabela)
         .select(['usuarioambiente.id','usaapelido','usunome','usuemail','usadescricao', 'usadataprimeiroacesso'])
         .leftJoin('usuario', 'usuario.id','=','usaidusuario')
+        .where('usaidambiente', '=', query.idAmb)
+        .andAll(query.where)
         .orderBy('usaapelido', 'desc')
         .commit();
     },

@@ -14,7 +14,7 @@ export default {
     },
 
     async findDetalhado({ query }) {
-        const entity =await service.findDetalhado();
+        const entity =await service.findDetalhado(query);
         return responseHandler(200, entity);
     },
 

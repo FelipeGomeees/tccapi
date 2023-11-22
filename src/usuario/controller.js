@@ -15,7 +15,7 @@ export default {
 
     async register(req) {
         const entity = await service.create(req);
-        return entity;
+        return responseHandler(200, entity);
     },
 
     async login({ query }) {

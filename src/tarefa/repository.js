@@ -10,13 +10,13 @@ export default {
         return entity;
     },
 
-    async findDetalhado(dados) {
+    async findDetalhado(query) {
     return new Builder(tabela)
         .select(['*', 'tarefa.id as idTarefa'])
         .leftJoin('executavel', 'taridexecutavel', '=', 'executavel.id')
         // .leftJoin('colaborador', 'colidusuarioambiente', '=', dados.idUsuAmb)
-        .where('taridambiente', '=', dados.idAmb) // Variação do WHERE para utilizar valores de colunas
-        //.where('colidusuario', '=', dados.idAmb)
+        .where('taridambiente', '=', query.idAmb) // Variação do WHERE para utilizar valores de colunas
+        .andAll(query.where)
         .commit();
     },
 
@@ -45,7 +45,7 @@ export default {
 
     async searchDetalhado(id) {
         return new Builder(tabela)
-        .select(['*'])
+        .select(['*', 'tarefa.id as idTarefa'])
         .leftJoin('executavel', 'taridexecutavel', '=', 'executavel.id')
         // .leftJoin('executavel', 'taridexecutavel', '=', 'executavel.id')
         .where('tarefa.id', '=', id)
@@ -102,6 +102,14 @@ export default {
         const query = `UPDATE ${tabela} SET`;
         const entity = (await pool.query(query)).rows;
         return entity;
+    },
+    async finalizar(params) {
+        return new Builder(tabela)
+        .set([
+            ['tardatafinalizado', new Date().toISOString()],
+        ])
+        .where('id', '=', params.idTarefa)
+        .commit();
     },
     async del(params) {
         const query = `DELETE FROM ${tabela}`;

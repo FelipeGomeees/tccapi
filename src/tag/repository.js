@@ -10,12 +10,13 @@ export default {
         .commit();
     },
 
-    async findPorAmbiente(idAmb) {
+    async findPorAmbiente(query) {
         return new Builder(tabela)
         .select(['tag.*'])
         .leftJoin('usuarioambiente', 'usuarioambiente.id', '=', 'tagidusuarioambiente')
         .leftJoin('ambiente', 'ambiente.id', '=', 'usaidambiente')
-        .where('ambiente.id', '=', idAmb)
+        .where('ambiente.id', '=', query.idAmb)
+        .andAll(query.where)
         .commit();
     },
 

@@ -25,9 +25,11 @@ export default {
 
     async searchDetalhado(query) {
         return new Builder(tabela)
-            .select(['*', 'cliente.id as idCliente'])
-            .leftJoin('usuarioambiente', 'cliidusuarioambiente', '=', 'usuarioambiente.id')
-            .whereAll(query.where)
+            .select(['cliente.*', 'cliente.id as idCliente'])
+            .leftJoin('usuarioambiente', 'usuarioambiente.id', '=', 'cliidusuarioambiente')
+            .leftJoin('ambiente', 'ambiente.id', '=', 'usaidambiente')
+            .where('ambiente.id', '=', query.idAmb)
+            .andAll(query.where)
             .commit();
         },
 

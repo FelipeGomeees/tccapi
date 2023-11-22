@@ -80,7 +80,11 @@ export class Builder {
             return this;
         }
 
-        if (typeof queryWhere !== 'object') {
+        if (!queryWhere) {
+            return this;
+        }
+
+        if (typeof queryWhere !== 'object' && !Array.isArray(queryWhere)) {
             this.error = new Error(`Em um WHERE ALL o parametro precisa ser um objeto`);
         }
 
@@ -97,9 +101,49 @@ export class Builder {
             if (i > 0) {
                 where = where + ' and '
             }
-            where = where + `${(Object.keys(queryWhere))[i]} = '${(Object.values(queryWhere))[i]}'`;
+            if (Array.isArray(Object.values(queryWhere)[i])) {
+                where = where + `${(Object.keys(queryWhere))[i]} beetwen '${(Object.values(queryWhere))[i][0]}' and '${(Object.values(queryWhere))[i][1]}'`;
+            } else {
+                where = where + `${(Object.keys(queryWhere))[i]} = '${(Object.values(queryWhere))[i]}'`;
+            } 
         }   
         this.queryString = `${this.queryString} WHERE ${where}`;
+        // FAZER AND WHERE
+        return this;
+    }
+    andAll( queryWhere ) {
+        if (this.validate()) {
+            return this;
+        }
+
+        if (!queryWhere) {
+            return this;
+        }
+
+        if (typeof queryWhere !== 'object' && !Array.isArray(queryWhere)) {
+            this.error = new Error(`Em um WHERE ALL o parametro precisa ser um objeto`);
+        }
+
+        const whereValues = Object.values(queryWhere);
+        for (let i = 0; i < whereValues.length; i++) {
+            if (typeof whereValues[i] === 'undefined') {
+                this.error = new Error(`Algum valor do WHERE ALL não foi definido`);
+            }
+        }   
+
+        let where = '';
+        const whereKeys = Object.keys(queryWhere);
+        for (let i = 0; i < whereKeys.length; i++) {
+            if (i > 0) {
+                where = where + ' and '
+            }
+            if (Array.isArray(Object.values(queryWhere)[i])) {
+                where = where + `${(Object.keys(queryWhere))[i]} BETWEEN '${(Object.values(queryWhere))[i][0]}' AND '${(Object.values(queryWhere))[i][1]}'`;
+            } else {
+                where = where + `${(Object.keys(queryWhere))[i]} = '${(Object.values(queryWhere))[i]}'`;
+            } 
+        }   
+        this.queryString = `${this.queryString}  AND ${where}`;
         // FAZER AND WHERE
         return this;
     }
@@ -131,6 +175,13 @@ export class Builder {
             return this;
         }
         this.queryString = `${this.queryString} ORDER BY ${coluna} ${ordenacao}`;
+        return this;
+    }
+    limit(num) {
+        if (this.validate()) {
+            return this;
+        }
+        this.queryString = `${this.queryString} LIMIT ${num}`;
         return this;
     }
     groupBy(colunas) {
@@ -178,6 +229,7 @@ export class Builder {
             return this.error;
         }
         try {
+            console.log(`Query: ${this.queryString}`)
             const data = (await pool.query(this.queryString)).rows;
             return data;
         } catch(e) {

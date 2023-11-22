@@ -10,9 +10,13 @@ export default {
         .commit();
     },
 
-    async findDetalhado() {
+    async findDetalhado(query) {
         return new Builder(tabela)
-        .select('*')
+        .select(['executavel.*'])
+        .leftJoin('usuarioambiente', 'usuarioambiente.id', '=', 'exeidusuarioambiente')
+        .leftJoin('ambiente', 'ambiente.id', '=', 'usaidambiente')
+        .where('ambiente.id', '=', query.idAmb)
+        .andAll(query.where)
         .commit();
     },
 

@@ -20,6 +20,11 @@ export default {
         return entity;
     },
 
+    async concluir(params) {
+        const entity = await repository.concluir(params);
+        return entity;
+    },
+
     async delete(req) {
         const entity = await repository.delete(query.where);
         return entity;

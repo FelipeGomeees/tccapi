@@ -1,6 +1,6 @@
 import repository from './repository.js';
 import colaboradorService from '../colaborador/service.js';
-import notificacaoService from '../notificacao/service.js';
+import tagTarefaService from '../tag-tarefa/service.js';
 import tagExecutavelService from '../tag-executavel/service.js';
 
 export default {
@@ -24,18 +24,6 @@ export default {
 
     async create(dados) {
         const entity = await repository.create(dados);
-        const query = {where: { colidtarefa: dados.foridtipoforum }}
-        const colaboradores = await colaboradorService.search(query);
-        for (let i = 0; i < colaboradores.length; i++) {
-            ;
-            const body = { 
-                notdescricao: '???',
-                notidtiponotificacao: 3,
-                notidusuarioambiente: dados.foridusuarioambiente,
-                notdestinatario: colaboradores[i].colidusuarioambiente,
-            }
-            await notificacaoService.create(body);
-        }
         return entity;
     },
 
@@ -74,21 +62,12 @@ export default {
     },
 
     async searchDetalhado(params) {
-        const entity = await repository.searchDetalhado(params.idTar);
-        const final = [];
-        for (let i = 0; i < entity.length; i++) {
-            const temp = {
-                tarefa: null,
-                tags: null,
-                colaboradores: null,
-                exectags: null,
-            }
-            temp.tarefa = entity[i];
-            temp.tags = await tagTarefaService.findTagTarefa(params.idTar);
-            temp.colaboradores = await colaboradorService.findColaboradoresTarefa(params.idTar);
-            temp.exectags = await tagExecutavelService.findTagExecutavelTarefa(entity[i].taridexecutavel);
-            final.push(temp);
-        }
-        return final;
+        const entity = await repository.searchDetalhado(params);
+        return entity;
+    },
+
+    async solicitarSaida(params) {
+        const entity = await repository.solicitarSaida(params);
+        return entity;
     },
 }

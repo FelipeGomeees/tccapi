@@ -44,13 +44,18 @@ export default {
         return entity;
     },
 
+    async finalizar(body, params) {
+        const entity = await repository.finalizar(body.dados, params);
+        return entity;
+    },
+
     async delete(req) {
         const entity = await repository.delete(req.params);
         return entity;
     },
 
-    async findPorAmbiente(idAmb) {
-        const entity = await repository.findPorAmbiente(idAmb);
+    async findPorAmbiente(query) {
+        const entity = await repository.findPorAmbiente(query);
         return entity;
     },
 

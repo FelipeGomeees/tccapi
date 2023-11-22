@@ -44,8 +44,8 @@ export default {
         }
     },
 
-    async findPorAmbiente({ params }) {
-        const entity = await service.findPorAmbiente(params.idAmb);
+    async findPorAmbiente({ query }) {
+        const entity = await service.findPorAmbiente(query);
         if (entity instanceof Error) {
             return responseHandler(500, { message: entity.message, stack: entity.stack });
         } else {

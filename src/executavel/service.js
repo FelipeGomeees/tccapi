@@ -7,8 +7,8 @@ export default {
         return entity;
     },
 
-    async findDetalhado(body) {
-        const entity = await repository.findDetalhado(body);
+    async findDetalhado(query) {
+        const entity = await repository.findDetalhado(query);
         const newEntity = [];
         for (let i = 0; i < entity.length; i += 1) {
             const tags = await tagExecutavelRepository.findSpecific(entity[i]);

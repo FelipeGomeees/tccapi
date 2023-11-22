@@ -58,6 +58,15 @@ export default {
         const entity = (await pool.query(query)).rows;
         return entity;
     },
+    async concluir(params) {
+        return new Builder(tabela)
+        .set([
+            ['coldatafinalizacao', new Date().toISOString()],
+        ])
+        .where('colidtarefa', '=', params.idTarefa)
+        .and('colidusuarioambiente', '=', params.idUsuAmb)
+        .commit();
+    },
     async del(params) {
         const query = `DELETE FROM ${tabela}`;
         const entity = (await pool.query(query)).rows;
@@ -78,6 +87,7 @@ export default {
             .leftJoin('usuarioambiente', 'usuarioambiente.id', '=', 'colidusuarioambiente')
             .leftJoin('usuario', 'usuario.id', '=', 'usaidusuario')
             .where('colidtarefa', '=', idTarefa)
+            .orderBy('colaborador.id', 'asc')
             .commit();
     },
 }

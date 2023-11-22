@@ -27,7 +27,17 @@ export default {
 
     async searchDetalhado(query) {
         const entity = await repository.searchDetalhado(query);
-        return entity;
+        const final = [];
+        for (let i = 0; i < entity.length; i++) {
+            const temp = {
+                cliente: null,
+                contato: null,
+            }
+            temp.cliente = entity[i];
+            temp.contato= await clienteContatoService.search({where: { clcidcliente: entity[i].idcliente}});
+            final.push(temp);
+        }
+        return final;
     },
 
     async create(dados) {

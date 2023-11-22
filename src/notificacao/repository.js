@@ -1,4 +1,4 @@
-const tabela = 'forum';
+const tabela = 'notificacao';
 import { Builder } from "../utils/accel.js";
 import oldBuilder from "../utils/queryBuilder.js";
 
@@ -55,27 +55,21 @@ export default {
             .commit();
         },
 
-    async searchDetalhado(id) {
+    async searchDetalhado(where) {
         return new Builder(tabela)
         .select(['*'])
-        .leftJoin('executavel', 'taridexecutavel', '=', 'executavel.id')
-        // .leftJoin('executavel', 'taridexecutavel', '=', 'executavel.id')
-        .where('tarefa.id', '=', id)
+        .where('notificacao.notdestinatario', '=', where.idUsuAmb)
         .commit();
     },
 
     async create(body) {
         return new Builder(tabela)
         .insert([
-            ['foridusuarioambiente', body.foridusuarioambiente],
-            ['forcomentario', body.forcomentario],
-            ['fortipoforum', body.fortipoforum],
-            ['foridtipoforum', body.foridtipoforum],
-            ['fordatacriacao', new Date().toISOString()],
-            ['fordataedicao', body.fordataedicao],
-            ['forreacaopositiva', body.forreacaopositiva],
-            ['forreacaonegativa', body.forreacaonegativa],
-            ['foridforum', body.foridforum],
+            ['notdescricao', body.notdescricao],
+            ['notidusuarioambiente', body.notidusuarioambiente],
+            ['notidtiponotificacao', body.notidtiponotificacao],
+            ['notdatanotificacao', new Date().toISOString()],
+            ['notdestinatario', body.notdestinatario],
         ])
         .commit();
     },
@@ -95,6 +89,18 @@ export default {
             ['foridforum', body.foridforum],
         ])
         .where('id', '=', params.id)
+        .commit();
+    },
+
+    async solicitarSaida(params) {
+        return new Builder(tabela)
+        .insert([
+            ['notdescricao', params.idTarefa],
+            ['notidusuarioambiente', params.idUsuAmb],
+            ['notidtiponotificacao', 2],
+            ['notdatanotificacao', new Date().toISOString()],
+            ['notdestinatario', params.idUsuAmb],
+        ])
         .commit();
     },
 

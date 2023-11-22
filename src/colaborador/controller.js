@@ -34,6 +34,14 @@ export default {
             return responseHandler(200, entity);
         }
     },
+    async concluir({ params }) {
+        const entity = await service.concluir(params);
+        if (entity instanceof Error) {
+            return responseHandler(500, { message: entity.message, stack: entity.stack });
+        } else {
+            return responseHandler(200, entity);
+        }
+    },
     async delete(req) {
         const entity = await service.delete(req);
         if (entity instanceof Error) {

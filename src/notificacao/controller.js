@@ -27,17 +27,9 @@ export default {
         }
     },
 
-    async findDetalhado({ query }) {
-        let entity = await service.findDetalhado(query);
-        if (entity instanceof Error) {
-            return responseHandler(500, { message: entity.message, stack: entity.stack });
-        } else {
-            return responseHandler(201, entity);
-        }
-    },
-
-    async findRelatorio({ params }) {
-        let entity = await service.findRelatorio(params);
+    async solicitarSaida({ params }) {
+        let entity = null;
+        entity = await service.solicitarSaida(params);
         if (entity instanceof Error) {
             return responseHandler(500, { message: entity.message, stack: entity.stack });
         } else {
@@ -62,27 +54,8 @@ export default {
             return responseHandler(200, entity);
         }
     },
-
-    async finalizar({ params }) {
-        const entity = await service.finalizar(params);
-        if (entity instanceof Error) {
-            return responseHandler(500, { message: entity.message, stack: entity.stack });
-        } else {
-            return responseHandler(200, entity);
-        }
-    },
-
     async delete(req) {
         const entity = await service.delete(req);
-        if (entity instanceof Error) {
-            return responseHandler(500, { message: entity.message, stack: entity.stack });
-        } else {
-            return responseHandler(200, entity);
-        }
-    },
-
-    async recent({ query }) {
-        const entity = await service.recent(query.id);
         if (entity instanceof Error) {
             return responseHandler(500, { message: entity.message, stack: entity.stack });
         } else {

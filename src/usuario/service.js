@@ -14,8 +14,8 @@ export default {
     },
     async create(req) {
         // LEMBRAR DO HASHER, AAAAAAAA
-        const hash = await Hasher(req.body.senha);
-        const entity = await repository.create(req.body, hash);
+        // const hash = await Hasher(req.body.senha);
+        const entity = await repository.create(req.body.params);
         
         return entity;
     },

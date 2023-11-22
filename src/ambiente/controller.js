@@ -1,6 +1,7 @@
 import service from './service.js';
 import responseHandler from '../utils/responseHandler.js'
 
+
 // Controller: Manipulação do REQUEST, não do BODY/PARAM/QUERY
 export default {
     async find({ query }) {

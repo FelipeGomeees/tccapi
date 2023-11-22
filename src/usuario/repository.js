@@ -26,8 +26,8 @@ export default {
         return entity;
     },
     async create(body, hash) {
-        const query = `INSERT INTO ${tabela} (usunome, usuemail, ususenha) VALUES ('${body.usunome}', ${body.usuemail},'${hash}')`;
-        const entity = (await pool.query(query)).rows;
+        const query = `INSERT INTO ${tabela} (usunome, usuemail, ususenha) VALUES ('${body.usunome}', '${body.usuemail}','${body.ususenha}')`;
+        const entity = await Builder(query);
         return entity;
     },
     async alter(params) {
